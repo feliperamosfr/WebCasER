@@ -1,0 +1,70 @@
+<%@ page language="java" import="java.util.*" %>
+<%@ page import="PACOTE_MODEL.*" %>
+
+<%
+            String path = request.getContextPath();
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <base href="<%=basePath%>">
+        
+        <title> LABEL_TABELA </title>
+        
+        <meta http-equiv="pragma" content="no-cache">
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+        <meta http-equiv="description" content="This is my page">
+        
+        <!--
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    -->
+    </head>
+    
+    <body bgcolor="#FFFFFF" text="#000000">
+        
+        <center>
+        <table cellspacing=2 border=1 >
+            <tr bgcolor="#CCDDEE" colspan=1 >
+                <font size=5> <b> LABEL_TABELA </b> </font> 
+            </tr>
+
+            <tbody>
+                <tr bgcolor="#CCDDEE" colspan=1 >
+                    [REPETE_CAMPOS]
+                    <td align="center">LABEL_COLUNA</td>
+                    [/REPETE_CAMPOS]
+                    <td align="center">&nbsp;</td>
+                    <td align="center">&nbsp;</td>
+                </tr>
+                <%
+            Collection collection = (Collection) request.getAttribute("NOME_TABELA_TODOS");
+
+            for (Iterator iter = collection.iterator(); iter.hasNext();) {
+                NOME_TABELA element = (NOME_TABELA) iter.next();
+                out.println("<tr>");
+                [REPETE_CAMPOS]
+                out.println("<td>" + element.getNOME_COLUNA() + "</td>");
+                [/REPETE_CAMPOS]
+
+                [SOMENTE_PK]
+                out.println("<td><a href=srvNOME_TABELA?do=edit&NOME_COLUNA=" + element.getNOME_COLUNA() + ">Editar</a></td>");
+                out.println("<td><a href=srvNOME_TABELA?do=delete&NOME_COLUNA=" + element.getNOME_COLUNA() + ">Excluir</a></td>");
+                [/SOMENTE_PK]
+                out.println("</tr>");
+            }
+                %>
+            </tbody>
+        </table>
+        <br>
+
+        <h1 align="center"><a href="srvNOME_TABELA?do=add"> <font size="3">
+        <strong>Novo Registro</strong></font></a></h1>
+        <h1 align="center"> <strong><font size="3">
+        <a href="index.jsp"> Menu Principal </a></font></strong> </h1>
+
+    </body>
+</html>

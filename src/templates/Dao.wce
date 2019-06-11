@@ -1,0 +1,157 @@
+/*
+ * TCC - FATEC 2008/02 - ADS
+ * Author: Felipe Ramos
+ * Sistema: WebCasER
+ */
+package PACOTE_DAO;
+
+import PACOTE_MODEL.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class NOME_TABELADao {
+
+    public Collection getAll() {
+        Collection NOME_TABELA = new ArrayList();
+        // load objs from db
+        try {
+            Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement( " SELECT " +
+                                                              [REPETE_CAMPOS]
+                                                              [NAO_PRIMEIRA_COLUNA]"," +
+                                                              " NOME_COLUNA " +
+                                                              [/REPETE_CAMPOS]
+                                                              " FROM NOME_TABELA ");
+            pstmt.executeQuery();
+            ResultSet rs = pstmt.getResultSet();
+            while (rs.next()){   
+                NOME_TABELA.add( new NOME_TABELA( 
+                                                [REPETE_CAMPOS]
+                                                [NAO_PRIMEIRA_COLUNA],
+                                                rs.getTIPO_RESULT_COLUNA("NOME_COLUNA")
+                                                [/REPETE_CAMPOS]
+                                 ));
+            }
+            
+            if ( NOME_TABELA == null ){
+                NOME_TABELA.add( new NOME_TABELA( ));
+            }
+            
+            
+        } catch (SQLException ex) {
+             ex.printStackTrace();
+        }        
+        return NOME_TABELA;
+    }
+    
+    public NOME_TABELA getNOME_TABELA( 
+                                       [SOMENTE_PK]
+                                       TIPO_COLUNA NOME_COLUNA
+                                       [/SOMENTE_PK]
+                                       ){
+        NOME_TABELA NOME_TABELA = new NOME_TABELA();
+
+        try {
+            Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(" SELECT " +
+                                                            [REPETE_CAMPOS]
+                                                            [NAO_PRIMEIRA_COLUNA]"," +
+                                                            " NOME_COLUNA " +
+                                                            [/REPETE_CAMPOS]
+                                                            " FROM NOME_TABELA " +
+                                                            " WHERE " +
+                                                            [SOMENTE_PK]
+                                                            " NOME_COLUNA = ? "
+                                                            [/SOMENTE_PK]
+                                                            );
+            [SOMENTE_PK]
+            pstmt.setTIPO_RESULT_COLUNA(1, NOME_COLUNA );
+            [/SOMENTE_PK]
+            pstmt.executeQuery();
+            ResultSet rs = pstmt.getResultSet();
+            
+            if ( rs.next() ){   
+                NOME_TABELA = new NOME_TABELA( 
+                                                [REPETE_CAMPOS]
+                                                [NAO_PRIMEIRA_COLUNA],
+                                                rs.getTIPO_RESULT_COLUNA("NOME_COLUNA")
+                                                [/REPETE_CAMPOS]
+                                 );
+            } else {
+               NOME_TABELA = new NOME_TABELA( );
+            }
+            
+        } catch (SQLException ex) {
+             ex.printStackTrace();
+        }        
+        return NOME_TABELA;
+    }
+    
+    public void salvar(NOME_TABELA obj) {
+
+            try {
+                Connection conn = DBConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO NOME_TABELA (" +
+                                                                [REPETE_CAMPOS_NAO_PK]
+                                                                [NAO_PRIMEIRA_COLUNA]" , "+
+                                                                " NOME_COLUNA " +
+                                                                [/REPETE_CAMPOS_NAO_PK]
+                                                                " ) VALUES ( " +
+                                                                [REPETE_CAMPOS_NAO_PK]
+                                                                [NAO_PRIMEIRA_COLUNA] " , "+
+                                                                " ? " +
+                                                                [/REPETE_CAMPOS_NAO_PK]
+                                                                " )" );
+                [REPETE_CAMPOS_NAO_PK]
+                pstmt.setTIPO_RESULT_COLUNA( SEQUENCIAL_INI, obj.getNOME_COLUNA());
+                [/REPETE_CAMPOS_NAO_PK]
+                pstmt.executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+    }
+
+    public void update(NOME_TABELA obj) {
+
+            try {
+                Connection conn = DBConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(" UPDATE NOME_TABELA SET " +
+                                                                [REPETE_CAMPOS_NAO_PK]
+                                                                [NAO_PRIMEIRA_COLUNA]" , "+
+                                                                " NOME_COLUNA = ? " +
+                                                                [/REPETE_CAMPOS_NAO_PK]
+                                                                [SOMENTE_PK]
+                                                                " WHERE NOME_COLUNA = ? " 
+                                                                [/SOMENTE_PK]
+                                                                );
+                [REPETE_CAMPOS_NAO_PK]
+                pstmt.setTIPO_RESULT_COLUNA( SEQUENCIAL_INI, obj.getNOME_COLUNA());
+                [/REPETE_CAMPOS_NAO_PK]
+                [SOMENTE_PK]
+                pstmt.setTIPO_RESULT_COLUNA( SEQUENCIAL_CONT, obj.getNOME_COLUNA());
+                [/SOMENTE_PK]
+                pstmt.executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+    }
+    
+    public void delete( 
+                        [SOMENTE_PK]
+                        TIPO_COLUNA NOME_COLUNA
+                        [/SOMENTE_PK]
+                        ){
+            try {
+                Connection conn = DBConnection.getInstance().getConnection();
+                [SOMENTE_PK]
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM NOME_TABELA WHERE NOME_COLUNA = ?");
+                pstmt.setTIPO_RESULT_COLUNA( SEQUENCIAL_INI, NOME_COLUNA );
+                [/SOMENTE_PK]
+                pstmt.executeUpdate();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+    }
+}

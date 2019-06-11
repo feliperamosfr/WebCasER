@@ -1,0 +1,45 @@
+/** DAO - Created by WebCasER */
+package PACOTE_DAO;
+
+import java.sql.*;
+
+public class DBConnection {
+
+    private static DBConnection dbInstance = null;
+    private static Connection conn = null;
+
+    public static DBConnection getInstance() throws SQLException {
+        if (dbInstance == null) {
+            dbInstance = new DBConnection();
+        }
+        return dbInstance;
+    }
+
+    private DBConnection() throws SQLException {
+        openConnection();
+    }
+
+    private void openConnection() throws SQLException {
+        try {
+            Class.forName("DRIVER_DB");
+            conn = DriverManager.getConnection("URL_DB", "USUARIO_DB", "SENHA_DB");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean closeConnection() {
+        try {
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Connection getConnection() {
+        return conn;
+    }
+}
+

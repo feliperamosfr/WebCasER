@@ -1,0 +1,39 @@
+/*
+ * TCC - FATEC 2008/02 - ADS
+ * Author: Felipe Ramos
+ * Sistema: WebCasER
+ */
+package PACOTE_MODEL;
+
+public class NOME_TABELA{
+
+    // ATRIBUTOS DA CLASSE
+    [REPETE_CAMPOS]
+    private TIPO_COLUNA NOME_COLUNA;
+    [/REPETE_CAMPOS]
+
+    // CONSTRUTOR EM BRANCO
+    public NOME_TABELA(){
+      [REPETE_CAMPOS]
+      this.NOME_COLUNA = INICIALIZA_COLUNA;
+      [/REPETE_CAMPOS]
+    }
+    
+    public NOME_TABELA(
+      [REPETE_CAMPOS]
+        [NAO_PRIMEIRA_COLUNA],
+        TIPO_COLUNA NOME_COLUNA 
+      [/REPETE_CAMPOS]
+    ){
+      [REPETE_CAMPOS]
+      this.NOME_COLUNA = NOME_COLUNA;
+      [/REPETE_CAMPOS]
+    }
+    
+    // METODOS DA CLASSE
+    [REPETE_CAMPOS]
+    public void setNOME_COLUNA( TIPO_COLUNA NOME_COLUNA ){ this.NOME_COLUNA = NOME_COLUNA; }
+    public TIPO_COLUNA getNOME_COLUNA( ){ return this.NOME_COLUNA; }
+    [/REPETE_CAMPOS]
+
+}

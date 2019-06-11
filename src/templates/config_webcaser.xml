@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : config_webcaser.xml
+    Created on : 3 de Outubro de 2008, 16:14
+    Author     : Felipe Ramos
+    Description: Arquivo contendo informações uteis como:
+                 * templates, 
+                 * origem e destino de arquivos
+                 * nomenclaturas
+
+                 
+                 -->
+
+<webcaser>
+    <templates>
+        <template nome="Model" descricao="Template de Classe" tipo="TABELA" arquivoTemplate="Model.wce" nomeAntes="" nomeDepois="" extensao="java" />
+        <template nome="ViewList" descricao="View para Listar Registros" tipo="TABELA" arquivoTemplate="JspList.wce" nomeAntes="" nomeDepois="List" extensao="jsp" />
+        <template nome="View" descricao="View para Cadastrar/Alterar" tipo="TABELA" arquivoTemplate="Jsp.wce" nomeAntes="" nomeDepois="" extensao="jsp" />
+        <template nome="Servlet" descricao="Servlet" tipo="TABELA" arquivoTemplate="Servlet.wce" nomeAntes="srv" nomeDepois="" extensao="java" />
+        <template nome="Dao" descricao="Arquivos Dao" tipo="TABELA" arquivoTemplate="Dao.wce" nomeAntes="" nomeDepois="Dao" extensao="java" />
+        <template nome="index" descricao="Pagina de Index" tipo="UNICO" arquivoTemplate="Index.wce" nomeAntes="" nomeDepois="" extensao="jsp" />
+        <template nome="web" descricao="Web.xml" tipo="UNICO" arquivoTemplate="Web.wce" nomeAntes="" nomeDepois="" extensao="xml" />
+        <template nome="errorPage" descricao="Página para redirecionamento de erros" tipo="UNICO" arquivoTemplate="errorPage.wce" nomeAntes="" nomeDepois="" extensao="jsp" />
+        <template nome="DBConnection" descricao="Conexão com Banco" tipo="UNICO" arquivoTemplate="DBConnection.wce" nomeAntes="" nomeDepois="" extensao="java" />
+    </templates> 
+</webcaser>

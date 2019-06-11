@@ -1,0 +1,32 @@
+<%-- 
+    Document   : index
+    Created on : 20/04/2008, 11:42:10
+    Author     : WebCasER
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    
+    <p>
+    
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <h1 align="center"><font color="#000066" size="6" face="Georgia, Times New Roman, Times, serif">WebCasER</font></h1>
+ 
+    [REPETE_TABELAS]
+    <h2 align="center">&nbsp;</h2>
+    <h2 align="center"> LABEL_TABELA </h2>
+    <table width="35%" border="1" align="center">
+        <tr> 
+            <td width="44%"><h3 align="center"><a href="srvNOME_TABELA?do=add">Cadastrar</a></h3></td>
+            <td width="56%"><h3 align="center"><a href="srvNOME_TABELA?do=listar">Consultar</a></h3></td>
+        </tr>
+    </table>
+    [/REPETE_TABELAS]
+
+
+    <p>
+<p> </html>

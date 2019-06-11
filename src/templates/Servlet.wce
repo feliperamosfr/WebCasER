@@ -1,0 +1,208 @@
+/*
+ * TCC - FATEC 2008/02 - ADS
+ * Author: Felipe Ramos
+ * Sistema: WebCasER
+ */
+package PACOTE_CONTROLLER;
+
+import PACOTE_DAO.*;
+import PACOTE_MODEL.*;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * @author Felipe Ramos
+ * @System WebCasER
+ */
+public class srvNOME_TABELA extends HttpServlet {
+
+    /**
+     * Constructor of the object.
+     */
+    public srvNOME_TABELA() {
+        super();
+    }
+
+    /**
+     * Destruction of the servlet. <br>
+     */
+    public void destroy() {
+        super.destroy(); // Just puts "destroy" string in log
+    // Put your code here
+    }
+
+    /**
+     * The doGet method of the servlet. <br>
+     *
+     * This method is called when a form has its tag value method equals to get.
+     * 
+     * @param request the request send by the client to the server
+     * @param response the response send by the server to the client
+     * @throws ServletException if an error occurred
+     * @throws IOException if an error occurred
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        //init session of request
+        HttpSession session = request.getSession();
+        //get parameter do of the request
+        String action = new String("");
+        if (request.getParameter("do") != null) {
+            action = request.getParameter("do");
+        }
+
+        //Inicializa database class
+        NOME_TABELADao objDao = new NOME_TABELADao();
+        NOME_TABELA NOME_TABELA;
+
+        //get the id of the request
+        [SOMENTE_PK]
+        int NOME_COLUNA = 0;
+        if (request.getParameter("NOME_COLUNA") != null) {
+            NOME_COLUNA = Integer.valueOf(request.getParameter("NOME_COLUNA"));
+        }
+        [/SOMENTE_PK]
+
+
+        // ACAO DE LISTAR
+        if (action.equals("listar")) {
+
+            //Busca todos os registros da tabela
+            Collection collection = objDao.getAll();
+
+            //set the returned collection in the request
+            request.setAttribute("NOME_TABELA_TODOS", collection);
+
+            //get the request dispatcher
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/NOME_TABELAList.jsp");
+
+            //forward to the jsp file to display the book list
+            dispatcher.forward(request, response);
+
+        } else {
+
+            //add / edit / delete book
+            if (action.equals("add")) {
+                NOME_TABELA = new NOME_TABELA();
+                //set the book objekt in the request
+                request.setAttribute("NOME_TABELA", NOME_TABELA);
+                //get the request dispatcher
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/NOME_TABELA.jsp");
+                //forward to the jsp file to display the book list
+                dispatcher.forward(request, response);
+
+            } else if (action.equals("edit")) {
+
+                [SOMENTE_PK]
+                NOME_TABELA = objDao.getNOME_TABELA(NOME_COLUNA);
+                [/SOMENTE_PK]
+
+                //set the book objekt in the request
+                request.setAttribute("NOME_TABELA", NOME_TABELA);
+
+                //get the request dispatcher
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/NOME_TABELA.jsp");
+
+                //forward to the jsp file to display the book list
+                dispatcher.forward(request, response);
+
+
+            //delete book
+            } else if (action.equals("delete")) {
+
+                //delete the book by id
+                [SOMENTE_PK]
+                objDao.delete(NOME_COLUNA);
+                [/SOMENTE_PK]
+
+                //Redireciona para a Tela de List
+                response.sendRedirect("srvNOME_TABELA?do=listar");
+
+            }
+        }
+
+
+    }
+
+    /**
+     * The doPost method of the servlet. <br>
+     *
+     * This method is called when a form has its tag value method equals to post.
+     * 
+     * @param request the request send by the client to the server
+     * @param response the response send by the server to the client
+     * @throws ServletException if an error occurred
+     * @throws IOException if an error occurred
+     */
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        //get session of the request
+        HttpSession session = request.getSession();
+
+        //Inicializa database class
+        NOME_TABELADao objDao = new NOME_TABELADao();
+        NOME_TABELA NOME_TABELA;
+        //get the id of the request
+        [SOMENTE_PK]
+        int NOME_COLUNA = 0;
+        if (request.getParameter("NOME_COLUNA") != null) {
+            NOME_COLUNA = Integer.valueOf(request.getParameter("NOME_COLUNA"));
+        }
+        [/SOMENTE_PK]
+
+        [REPETE_CAMPOS_NAO_PK]
+        TIPO_COLUNA NOME_COLUNA = PEGAR_CAMPO_TELA;
+        [/REPETE_CAMPOS_NAO_PK]
+
+        //create a new book object
+        NOME_TABELA = new NOME_TABELA(
+                                      [REPETE_CAMPOS]
+                                        [NAO_PRIMEIRA_COLUNA],
+                                        NOME_COLUNA 
+                                      [/REPETE_CAMPOS]
+                                      );
+
+        ArrayList erros = new ArrayList();
+        [SOMENTE_STRING_OBRIGATORIOS]
+        if (NOME_TABELA.getNOME_COLUNA().equals("") ) {
+            erros.add( "Campo [LABEL_COLUNA] em branco.</a>" );
+        }
+        [/SOMENTE_STRING_OBRIGATORIOS]
+        if (erros.size() > 0 ){
+            request.setAttribute("ERROS", erros);            
+            throw new IOException( "Campos Obrigatorios em branco!");
+        }
+
+        //save the obj to DB
+        [SOMENTE_PK]
+        if( NOME_COLUNA == 0){
+            objDao.salvar(NOME_TABELA);
+        } else {
+            objDao.update(NOME_TABELA);
+        }
+        [/SOMENTE_PK]
+
+        //redirect to the book list servlet 
+        response.sendRedirect("srvNOME_TABELA?do=listar");
+
+    }
+
+    /**
+     * Initialization of the servlet. <br>
+     *
+     * @throws ServletException if an error occure
+     */
+    public void init() throws ServletException {
+    // Put your code here
+    }
+}
